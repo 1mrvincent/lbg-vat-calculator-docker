@@ -1,7 +1,7 @@
 
 pipeline {
   environment {
-    registry = "vincentenyinwa/lbg-vat-compose"
+    registry = "vincentenyinwa/lbg-vat-docker-img"
     registryCredential = "dockerhub_id"
     dockerImage = ""
     RUNSERVER = credentials('DOCKER_RUN_SERVER')
@@ -36,23 +36,23 @@ pipeline {
       }
     }
 
-    stage("copy compose file to runserver"){
-      steps {
-        script {
-          sh "sudo su -jenkins"
-          sh "sftp $RUNSERVER"
-          sh "put docker-compose.yaml"
-          sh "exit"
-        }
-      }
-    }
+    // stage("copy compose file to runserver"){
+    //   steps {
+    //     script {
+    //       sh "sudo su -jenkins"
+    //       sh "sftp $RUNSERVER"
+    //       sh "put docker-compose.yaml"
+    //       sh "exit"
+    //     }
+    //   }
+    // }
 
-    stage ("connect to runserver and execute compose") {
+    stage ("connect to runserver and run dockerfile") {
       steps {
         script {
           sh "sudo su -jenkins"
           sh "ssh $RUNSERVER"
-          sh "docker-compose up -d "
+          sh "sudo docker run -d ${registry} -p 3306:80 "
         }
       }
     }
