@@ -50,7 +50,6 @@ pipeline {
     stage ("connect to runserver and run dockerfile") {
       steps {
         script {
-          sh "sudo su -jenkins"
           sh "ssh $RUNSERVER"
           sh "sudo docker run -d ${registry} -p 3306:80 "
         }
