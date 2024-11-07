@@ -51,7 +51,7 @@ pipeline {
       steps {
         script {
           sh "ssh $RUNSERVER"
-          sh "docker run -d ${registry} -p 3306:3000 "
+          sh "docker run -d -p 3306:3000 ${registry}"
         }
       }
     }
